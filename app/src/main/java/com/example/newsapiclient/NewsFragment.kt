@@ -78,7 +78,7 @@ class NewsFragment : Fragment() {
     }
 
     private fun hideProgressBar(){
-        fragmentNewsBinding.progressBar.visibility = View.INVISIBLE
+        fragmentNewsBinding.progressBar.visibility = View.GONE
     }
 
 }
