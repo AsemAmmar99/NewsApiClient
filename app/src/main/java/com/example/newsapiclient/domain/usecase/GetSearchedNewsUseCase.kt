@@ -6,7 +6,7 @@ import com.example.newsapiclient.domain.repository.NewsRepository
 import java.time.temporal.TemporalQuery
 
 class GetSearchedNewsUseCase(private val newsRepository: NewsRepository) {
-    suspend fun execute(searchQuery: String): Resource<ApiResponse>{
-        return newsRepository.getSearchedNews(searchQuery)
+    suspend fun execute(country: String, searchQuery: String, page: Int): Resource<ApiResponse>{
+        return newsRepository.getSearchedNews(country, searchQuery, page)
     }
 }
