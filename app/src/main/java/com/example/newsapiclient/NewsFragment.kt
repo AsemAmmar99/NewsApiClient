@@ -169,35 +169,38 @@ class NewsFragment : Fragment() {
     }
 
     fun viewSearchedNews(){
-        viewModel.searchedNews.observe(viewLifecycleOwner,{response->
-            when(response){
-                is Resource.Success->{
+        if (view != null) {
+            viewModel.searchedNews.observe(viewLifecycleOwner, { response ->
+                when (response) {
+                    is Resource.Success -> {
 
-                    hideProgressBar()
-                    response.data?.let {
-                        Log.i("MYTAG","came here ${it.articles.toList().size}")
-                        newsAdapter.differ.submitList(it.articles.toList())
-                        if (it.totalResults%20 == 0) {
-                            pages = it.totalResults / 20
-                        }else{
-                            pages = it.totalResults / 20+1
+                        hideProgressBar()
+                        response.data?.let {
+                            Log.i("MYTAG", "came here ${it.articles.toList().size}")
+                            newsAdapter.differ.submitList(it.articles.toList())
+                            pages = if (it.totalResults % 20 == 0) {
+                                it.totalResults / 20
+                            } else {
+                                it.totalResults / 20 + 1
+                            }
+                            isLastPage = page == pages
                         }
-                        isLastPage = page == pages
                     }
-                }
-                is Resource.Error->{
-                    hideProgressBar()
-                    response.message?.let {
-                        Toast.makeText(activity,"An error occurred : $it", Toast.LENGTH_LONG).show()
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        response.message?.let {
+                            Toast.makeText(activity, "An error occurred : $it", Toast.LENGTH_LONG)
+                                .show()
+                        }
                     }
-                }
 
-                is Resource.Loading->{
-                    showProgressBar()
-                }
+                    is Resource.Loading -> {
+                        showProgressBar()
+                    }
 
-            }
-        })
+                }
+            })
+        }
     }
 
 }
